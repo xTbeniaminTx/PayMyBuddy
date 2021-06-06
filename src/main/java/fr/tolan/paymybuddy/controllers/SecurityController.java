@@ -18,6 +18,11 @@ public class SecurityController {
   @Autowired
   UserAccountRepository accountRepository;
 
+  @GetMapping("/login")
+  public String login() {
+    return "security/login";
+  }
+
   @GetMapping("/register")
   public String register(Model model) {
     UserAccount userAccount = new UserAccount();

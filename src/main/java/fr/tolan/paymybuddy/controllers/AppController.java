@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AppController {
 
-  @GetMapping("/admin")
-  public String admin() {
-    return "403";
-  }
+//  @GetMapping("/admin")
+//  public String admin() {
+//    return "403";
+//  }
 
-  @GetMapping("/")
+  @GetMapping("/home")
   public String home() {
     return "home";
   }

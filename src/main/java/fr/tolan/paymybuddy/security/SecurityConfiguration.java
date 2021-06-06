@@ -22,8 +22,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.jdbcAuthentication()
-        .usersByUsernameQuery("select user_name, password, status from users where username = ?")
-        .authoritiesByUsernameQuery("select user_name, role from users where username = ?")
+        .usersByUsernameQuery("select user_name, password, status from users where user_name = ?")
+        .authoritiesByUsernameQuery("select user_name, role from users where user_name = ?")
         .dataSource(dataSource)
         .passwordEncoder(bCryptPasswordEncoder);
   }
@@ -31,13 +31,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
-        .antMatchers("/admin").hasAuthority("ADMIN")
+        .antMatchers("/adm").hasAuthority("ADMIN")
         .antMatchers("/transaction").hasAuthority("USER")
         .antMatchers("/", "/**").permitAll()
         .and()
-        .formLogin().loginPage("/login")
+        .formLogin().loginPage("/login").loginProcessingUrl("/login_action").permitAll()
         .and()
-        .logout();
+        .logout().permitAll()
+        .and()
+        .exceptionHandling().accessDeniedPage("/access-denied");
   }
 
 }

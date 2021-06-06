@@ -22,26 +22,16 @@ public class SecurityController {
   @Autowired
   UserAccountRepository accountRepository;
 
-//  @GetMapping("/login")
-//  public String login() {
-//    return "security/login";
-//  }
-
-  @GetMapping("/login")
-  public ModelAndView login(ModelAndView md, UserAccount user) {
-    md.addObject("user", user);
-    md.setViewName("security/login");
-    return md;
+  @GetMapping("/adm")
+  public String login() {
+    return "security/admin";
   }
 
-  @PostMapping("/login_action")
-  public String loginAction(UserAccount user) {
-    if (SecurityContextHolder.getContext().getAuthentication()
-        .getPrincipal() instanceof UserAccount) {
-      return "user/dashboardUser";
-    }
+  @GetMapping("/login")
+  public String showLogin() {
 
     return "security/login";
+
   }
 
   @GetMapping("/register")
@@ -55,7 +45,14 @@ public class SecurityController {
   public String saveUser(Model model, UserAccount userAccount) {
     userAccount.setPassword(bCryptPasswordEncoder.encode(userAccount.getPassword()));
     accountRepository.save(userAccount);
-    return "redirect:/";
+    return "redirect:/home";
+  }
+
+  @GetMapping("/access-denied")
+  public String showAccessDenied() {
+
+    return "access-denied";
+
   }
 
 }

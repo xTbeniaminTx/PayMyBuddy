@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="ISO-8859-1">
-  <title>Pay My Buddy - Home</title>
+  <title>Error Page</title>
   <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
   <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
@@ -16,38 +16,33 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <h1>
-      <a class="navbar-brand" th:href="@{#}">Pay My Buddy</a>
+      <a class="navbar-brand" th:href="@{/}">Pay my Buddy</a>
     </h1>
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0 container-fluid justify-content-end">
         <li class="nav-item">
-          <a class="Btn_link btn btn-success mr-2" th:href="@{/transfer}">Transfer</a>
+          <a class="Btn_link btn btn-success mr-2" th:href="@{/login}">Login</a>
         </li>
-
         <li class="nav-item">
-          <a class="Btn_link btn btn-success mr-2" th:href="@{/profile}">Profile</a>
+          <a class="Btn_link btn btn-success mr-2" th:href="@{/register}">Register</a>
         </li>
-
-        <li class="nav-item">
-          <a class="Btn_link btn btn-success mr-2" th:href="@{/contact}">Contact</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="Btn_link btn btn-success mr-2" th:href="@{/logout}">Log off</a>
-        </li>
-
       </ul>
     </div>
   </nav>
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item active" aria-current="page"><a href="#">Dashboard</a></li>
-
-      ${userAccount}
-
-    </ol>
-  </nav>
 </header>
+
+<section class="container-fluid mt-15 ">
+  <div class="d-flex flex-column align-items-center">
+    <h1>This is a general error page</h1>
+    <p>An easy, optimize and efficient solution for payments</p>
+    <div class="row row-no-pm container-fluid justify-content-center">
+      <div class="col-lg-8 d-flex justify-content-center">
+        <img
+            src="https://image.freepik.com/vecteurs-libre/personnes-utilisant-banque-mobile-pour-transfert-argent_74855-6617.jpg"/>
+      </div>
+    </div>
+  </div>
+</section>
 </body>
 </html>

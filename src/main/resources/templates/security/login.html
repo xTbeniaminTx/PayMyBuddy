@@ -36,17 +36,50 @@
 <section class="row justify-content-center">
   <form class="col col-sm-10 col-md-8 col-lg-3 encart d-flex flex-column align-items-center"
         style="border:solid 2px; border-radius:7px; padding:25px; color:grey"
-        th:action="@{/login_action}" th:object="${userAccount}" method="POST">
+        th:action="@{/login_action}" method="POST">
     <h1 style="background: linear-gradient(to right, #57B462, #81C244); padding:10px; border-radius:10px; color:white">
       Pay My Buddy</h1>
-    <input class="form-control mb-4 mt-4" type="text" name="Pseudo" placeholder="Username" required
-           th:field="*{userName}">
-    <input id="pass" class="form-control mb-4" type="password" name="Password"
-           placeholder="Password" required th:field="*{password}" minlength="6" maxlength="10">
+
+    <!-- Place for messages: error, alert etc ... -->
+<!--    <div class="form-group">-->
+<!--      <div class="col-xs-15">-->
+<!--        <div>-->
+
+<!--          &lt;!&ndash; Check for login error &ndash;&gt;-->
+
+<!--          <div th:if="${param.error}">-->
+
+<!--            <div class="alert alert-danger col-xs-offset-1 col-xs-10">-->
+<!--              Invalid username and password.-->
+<!--            </div>-->
+
+<!--          </div>-->
+
+<!--          &lt;!&ndash; Check for logout &ndash;&gt;-->
+
+<!--          <div th:if="${param.logout}">-->
+
+<!--            <div class="alert alert-success col-xs-offset-1 col-xs-10">-->
+<!--              You have been logged out.-->
+<!--            </div>-->
+
+<!--          </div>-->
+
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+
+    <input class="form-control mb-4 mt-4" type="text" name="username" placeholder="Username"
+           required>
+    <input id="pass" class="form-control mb-4" type="password" name="password"
+           placeholder="Password" required minlength="6" maxlength="10">
+
     <div>
       <input type="checkbox" id="rememberUser" name="rememberUser" checked>
       <label for="rememberUser">Remember me</label>
     </div>
+
     <button id="submit_sign_in" style="margin-top:75px" type="submit"
             class="Btn_link btn btn-success">Login
     </button>

@@ -11,6 +11,22 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class User {
 
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
+
+  private String userName;
+
+  private String email;
+
+  private String password;
+
+  private String role;
+
+  @Column(name = "status")
+  private boolean enabled = true;
+
   public User() {
   }
 
@@ -24,25 +40,6 @@ public class User {
     this.enabled = enabled;
   }
 
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
-
-  @Column(name = "user_name")
-  private String userName;
-
-  @Column(name = "email")
-  private String email;
-
-  @Column(name = "password")
-  private String password;
-
-  @Column(name = "role")
-  private String role;
-
-  @Column(name = "enabled")
-  private boolean enabled;
 
   public Integer getId() {
     return id;

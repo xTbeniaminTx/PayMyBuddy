@@ -17,21 +17,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Autowired
   DataSource dataSource;
 
-  @Bean
-  public BCryptPasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+  @Autowired
+  BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
+    auth.jdbcAuthentication()
+        .usersByUsernameQuery("select user_name, password, status from users where username = ?")
+        .authoritiesByUsernameQuery("select user_name, role from users where username = ?")
+        .dataSource(dataSource)
+        .passwordEncoder(bCryptPasswordEncoder);
   }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/", "/register", "/register_action", "/login", "/login_action", "/webjars/**").permitAll()
+        .antMatchers("/", "/register", "/register_action", "/login", "/login_action", "/webjars/**")
+        .permitAll()
         .anyRequest().authenticated()
         .and()
         .formLogin()

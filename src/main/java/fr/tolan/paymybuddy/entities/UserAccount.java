@@ -22,7 +22,7 @@ public class UserAccount {
 
   private String password;
 
-  private String role;
+  private String role = "USER";
 
   @Column(name = "status")
   private boolean enabled = true;

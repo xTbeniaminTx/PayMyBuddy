@@ -1,5 +1,6 @@
 package fr.tolan.paymybuddy.entities;
 
+import com.sun.istack.NotNull;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,22 +36,23 @@ public class UserAccount {
 
   @ManyToMany
   @JoinTable(
-      name="contacts",
-      joinColumns = { @JoinColumn(name="first_user") },
-      inverseJoinColumns = { @JoinColumn(name = "second_user") }
+      name = "contacts",
+      joinColumns = {@JoinColumn(name = "first_user")},
+      inverseJoinColumns = {@JoinColumn(name = "second_user")}
   )
   private Set<UserAccount> contacts;
 
   @ManyToMany
   @JoinTable(
-      name="contacts",
-      joinColumns = { @JoinColumn(name="second_user") },
-      inverseJoinColumns = { @JoinColumn(name = "first_user") }
+      name = "contacts",
+      joinColumns = {@JoinColumn(name = "second_user")},
+      inverseJoinColumns = {@JoinColumn(name = "first_user")}
   )
   private Set<UserAccount> contactOf;
 
   @OneToOne(cascade = CascadeType.ALL)
-  private BankAccount bankAccount;
+  @NotNull
+  private BankAccount bankAccount = new BankAccount();
 
   public UserAccount() {
   }

@@ -2,6 +2,7 @@ package fr.tolan.paymybuddy.controllers;
 
 import fr.tolan.paymybuddy.daos.UserAccountRepository;
 import fr.tolan.paymybuddy.entities.UserAccount;
+import fr.tolan.paymybuddy.services.UserAccountService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class SecurityController {
 
   @Autowired
+  UserAccountService userAccountService;
+
+  @Autowired
   BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Autowired
@@ -28,10 +32,20 @@ public class SecurityController {
   }
 
   @GetMapping("/login")
-  public String showLogin() {
+  public ModelAndView login(ModelAndView md, UserAccount user) {
+    md.addObject("user", user);
+    md.setViewName("security/login");
+    return md;
+  }
 
-    return "security/login";
-
+  @PostMapping("/dashboard")
+  public String loginAction(HttpServletRequest req, UserAccount user) {
+    userAccountService.authenticateUser(req, user);
+    if (SecurityContextHolder.getContext().getAuthentication()
+        .getPrincipal() instanceof UserDetails) {
+      return "user/dashboardUser";
+    }
+    return "redirect:/error";
   }
 
   @GetMapping("/register")
@@ -41,11 +55,16 @@ public class SecurityController {
     return "security/register";
   }
 
-  @PostMapping("/register/save")
-  public String saveUser(Model model, UserAccount userAccount) {
-    userAccount.setPassword(bCryptPasswordEncoder.encode(userAccount.getPassword()));
-    accountRepository.save(userAccount);
-    return "redirect:/home";
+  @PostMapping("/register_action")
+  public String register(UserAccount user) throws Exception {
+    userAccountService.registerUser(user);
+    if (accountRepository.findByUserName(user.getUserName()) == null) {
+      accountRepository.save(user);
+      return "register_success";
+    } else {
+      return "redirect:/error";
+    }
+
   }
 
   @GetMapping("/access-denied")

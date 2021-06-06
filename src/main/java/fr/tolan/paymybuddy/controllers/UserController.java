@@ -10,11 +10,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UserController {
 
-  @GetMapping("/profile")
-  public String profileView(Model model) throws Exception{
-    return "profile";
+  @GetMapping("/")
+  public String home() {
+    return "home";
   }
-
 
 
 }

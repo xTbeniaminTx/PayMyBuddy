@@ -2,7 +2,6 @@ package fr.tolan.paymybuddy.security;
 
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,13 +32,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/", "/register", "/register_action", "/login", "/login_action", "/webjars/**")
-        .permitAll()
-        .anyRequest().authenticated()
+        .antMatchers("/admin").hasRole("ADMIN")
+        .antMatchers("/transaction").hasRole("USER")
+        .antMatchers("/", "/**").permitAll()
         .and()
-        .formLogin()
-        .loginPage("/login")
-        .permitAll()
+        .formLogin().loginPage("/login")
         .and()
         .logout();
   }

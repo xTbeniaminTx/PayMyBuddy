@@ -1,10 +1,14 @@
 package fr.tolan.paymybuddy.entities;
 
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -26,6 +30,22 @@ public class UserAccount {
 
   @Column(name = "status")
   private boolean enabled = true;
+
+  @ManyToMany
+  @JoinTable(
+      name="contacts",
+      joinColumns = { @JoinColumn(name="first_user") },
+      inverseJoinColumns = { @JoinColumn(name = "second_user") }
+  )
+  private Set<UserAccount> contacts;
+
+  @ManyToMany
+  @JoinTable(
+      name="contacts",
+      joinColumns = { @JoinColumn(name="second_user") },
+      inverseJoinColumns = { @JoinColumn(name = "first_user") }
+  )
+  private Set<UserAccount> contactOf;
 
   public UserAccount() {
   }

@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class UserAccount {
 
 
   @Id
@@ -27,10 +27,10 @@ public class User {
   @Column(name = "status")
   private boolean enabled = true;
 
-  public User() {
+  public UserAccount() {
   }
 
-  public User(Integer id, String userName, String email, String password, String role,
+  public UserAccount(Integer id, String userName, String email, String password, String role,
       boolean enabled) {
     this.id = id;
     this.userName = userName;

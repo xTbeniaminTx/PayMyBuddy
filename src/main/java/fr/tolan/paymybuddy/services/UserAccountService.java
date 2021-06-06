@@ -28,12 +28,5 @@ public class UserAccountService {
 		HttpSession session = req.getSession(true);
 	    session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
 	}
-	
-//	public void registerUser(UserAccount user) {
-//		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//		String encodedPassword = passwordEncoder.encode(user.getPassword());
-//		user.setPassword(encodedPassword);
-//	}
 
-	
 }

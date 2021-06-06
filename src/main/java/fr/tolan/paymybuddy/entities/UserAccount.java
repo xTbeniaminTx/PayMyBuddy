@@ -1,6 +1,7 @@
 package fr.tolan.paymybuddy.entities;
 
 import com.sun.istack.NotNull;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -54,12 +56,20 @@ public class UserAccount {
   @NotNull
   private BankAccount bankAccount = new BankAccount();
 
+  @OneToMany(targetEntity = Transaction.class, mappedBy = "user")
+  private List<Transaction> transactions;
+
+  @OneToMany(targetEntity = Transaction.class, mappedBy = "transmitter")
+  private List<Transaction> transactionsAsTransmitter;
+
   public UserAccount() {
   }
 
   public UserAccount(Integer id, String userName, String email, String password,
       String role, boolean enabled, Set<UserAccount> contacts,
-      Set<UserAccount> contactOf, BankAccount bankAccount) {
+      Set<UserAccount> contactOf, BankAccount bankAccount,
+      List<Transaction> transactions,
+      List<Transaction> transactionsAsTransmitter) {
     this.id = id;
     this.userName = userName;
     this.email = email;
@@ -69,6 +79,8 @@ public class UserAccount {
     this.contacts = contacts;
     this.contactOf = contactOf;
     this.bankAccount = bankAccount;
+    this.transactions = transactions;
+    this.transactionsAsTransmitter = transactionsAsTransmitter;
   }
 
   public Integer getId() {
@@ -141,5 +153,22 @@ public class UserAccount {
 
   public void setBankAccount(BankAccount bankAccount) {
     this.bankAccount = bankAccount;
+  }
+
+  public List<Transaction> getTransactions() {
+    return transactions;
+  }
+
+  public void setTransactions(List<Transaction> transactions) {
+    this.transactions = transactions;
+  }
+
+  public List<Transaction> getTransactionsAsTransmitter() {
+    return transactionsAsTransmitter;
+  }
+
+  public void setTransactionsAsTransmitter(
+      List<Transaction> transactionsAsTransmitter) {
+    this.transactionsAsTransmitter = transactionsAsTransmitter;
   }
 }

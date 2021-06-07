@@ -42,18 +42,29 @@
   </nav>
 </header>
 
-<section class="row col-12 encart d-flex justify-content-center">
+<section class="row col-12 encart d-flex justify-content-around">
   <form
-      class="col col-sm-10 col-md-8 col-lg-3 encart d-flex flex-column align-items-center"
-      style="border: solid 2px; border-radius: 7px; padding: 25px; color: grey"
+      class="col col-sm-10 col-md-8 col-lg-3 d-flex flex-column align-items-center mt-2 pt-2 border mx-2 px-2"
       th:action="@{/contact_action}" method="POST">
-    <input class="form-control mb-4" type="text" name="contact" placeholder="Contact to add"
+    <input class="form-control  mt-2 pt-2 mx-2 px-2 mb-4" type="text" name="contact"
+           placeholder="Write the name of your contact"
            required th:name="connection">
 
-    <button style="margin-top: 75px" type="submit"
-            class="Btn_link btn btn-success">Add
+    <button type="submit"
+            class="mt-3 mb-2 btn btn-success">Add
     </button>
   </form>
+  <div
+      class="col col-sm-10 col-md-8 col-lg-3 encart d-flex flex-column align-items-center border mx-2 px-2">
+    <h3>Existing Contacts</h3>
+    <table class="table table-success table-striped">
+      <th:block th:each="contact : ${user.contacts}" class="table-info">
+        <tr>
+          <td class="table-info" th:text="${contact.getUserName}"></td>
+        </tr>
+      </th:block>
+    </table>
+  </div>
 </section>
 
 

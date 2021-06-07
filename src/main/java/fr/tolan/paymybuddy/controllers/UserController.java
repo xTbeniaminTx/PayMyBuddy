@@ -65,6 +65,7 @@ public class UserController {
       }
     }
 
+
     md.addAttribute("users", userThatCanBeAdded);
     md.addAttribute("user", principalUser);
     return "user/contact";

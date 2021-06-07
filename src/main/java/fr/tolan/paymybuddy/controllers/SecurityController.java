@@ -30,10 +30,6 @@ public class SecurityController {
   @Autowired
   UserAccountRepository accountRepository;
 
-  @GetMapping("/adm")
-  public String login() {
-    return "security/admin";
-  }
 
   @GetMapping("/login")
   public ModelAndView login(ModelAndView md, UserAccount user) {

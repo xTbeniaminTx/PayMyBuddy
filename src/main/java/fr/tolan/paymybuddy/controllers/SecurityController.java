@@ -4,6 +4,8 @@ import fr.tolan.paymybuddy.daos.UserAccountRepository;
 import fr.tolan.paymybuddy.entities.UserAccount;
 import fr.tolan.paymybuddy.services.UserAccountService;
 import javax.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class SecurityController {
+
+  private final Logger logger = LoggerFactory.getLogger(SecurityController.class);
 
   @Autowired
   UserAccountService userAccountService;

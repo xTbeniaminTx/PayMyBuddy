@@ -17,7 +17,7 @@ public class BankAccount {
   private double balance;
 
   @OneToOne(mappedBy = "bankAccount")
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
   private UserAccount user;
 
   public BankAccount() {

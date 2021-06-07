@@ -1,6 +1,7 @@
 package fr.tolan.paymybuddy.controllers;
 
 import fr.tolan.paymybuddy.daos.UserAccountRepository;
+import fr.tolan.paymybuddy.entities.Transaction;
 import fr.tolan.paymybuddy.entities.UserAccount;
 import fr.tolan.paymybuddy.services.TransactionServiceImpl;
 import fr.tolan.paymybuddy.services.UserAccountService;
@@ -101,7 +102,76 @@ public class UserController {
     throw new Exception("Error occured : it seems you are not logged in.");
   }
 
+  @GetMapping("/profile")
+  public ModelAndView profileView(ModelAndView md) throws Exception {
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    if (principal instanceof UserDetails) {
+      UserAccount user = accountRepository.findByUserName(((UserDetails) principal).getUsername());
+      md.addObject("user", user);
+      md.setViewName("user/profile");
+      return md;
+    } else {
+      throw new Exception("Error occured : it seems you are not logged in.");
+    }
+  }
 
+  @Transactional
+  @PostMapping("/transferBank_action")
+  public String bankTransferAction(@RequestParam double amount, ModelAndView md) throws Exception {
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    if (principal instanceof UserDetails) {
+      UserAccount user = accountRepository.findByUserName(((UserDetails) principal).getUsername());
+      entityManager
+          .createNativeQuery("UPDATE bank_account SET balance = ? WHERE id_bank_account = ?;")
+          .setParameter(1, amount + user.getBankAccount().getBalance())
+          .setParameter(2, user.getBankAccount().getIdBankAccount())
+          .executeUpdate();
+      md.addObject("user", user);
+      md.setViewName("user/profile");
+      return "redirect:/profile";
+    }
+    throw new Exception("Error occured : it seems you are not logged in.");
+  }
+
+  @GetMapping("/transfer")
+  public ModelAndView transferView(ModelAndView md) {
+
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    if (principal instanceof UserDetails) {
+
+      UserAccount user = accountRepository.findByUserName(((UserDetails) principal).getUsername());
+      List<Transaction> transactions = transactionServiceImpl.getAllTransactionsByUser(user);
+
+      md.addObject("setOfTransactions", transactions);
+      md.addObject("user", user);
+      md.setViewName("user/transfer");
+
+      return md;
+    }
+
+    return null;
+  }
+
+  @Transactional
+  @PostMapping("/transfer")
+  public String transferAction(
+      @RequestParam(value = "beneficiary", required = true) String beneficiary,
+      @RequestParam(value = "description", required = true) String description,
+      @RequestParam(value = "amount", required = true) double amount, ModelAndView md)
+      throws Exception {
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    if (principal instanceof UserDetails) {
+      UserAccount user = accountRepository.findByUserName(((UserDetails) principal).getUsername());
+      UserAccount beneficiaryUser = accountRepository.findByUserName(beneficiary);
+      transactionServiceImpl.transfer(user, beneficiaryUser, description, amount);
+      md.addObject("user", user);
+      md.setViewName("user/transfer");
+      return "redirect:/transfer";
+    } else {
+      throw new Exception("Error occured : it seems you are not logged in.");
+    }
+  }
 
 
 }

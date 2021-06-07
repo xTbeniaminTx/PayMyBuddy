@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Pay My Buddy - Home</title>
+  <link rel="stylesheet" type="text/css"
+        href="/webjars/bootstrap/css/bootstrap.min.css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css"
+        rel="stylesheet" type="text/css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/regular.min.css"
+        rel="stylesheet" type="text/css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        rel="stylesheet" type="text/css"/>
+  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+  <script type="text/javascript"
+          src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body style="padding-top: 160px">
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <h1>
+      <a class="navbar-brand" th:href="@{/}">Pay My Buddy</a>
+    </h1>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <ul
+          class="navbar-nav mr-auto mt-2 mt-lg-0 container-fluid justify-content-end">
+        <li class="nav-item"><a class="Btn_link btn btn-success mr-2"
+                                th:href="@{/transfer}">Transfer</a></li>
+
+        <li class="nav-item"><a class="Btn_link btn btn-success mr-2"
+                                th:href="@{/profile}">Profile</a></li>
+
+        <li class="nav-item"><a class="Btn_link btn btn-success mr-2"
+                                th:href="@{/contact}">Contact</a></li>
+
+        <li class="nav-item"><a class="Btn_link btn btn-success mr-2"
+                                th:href="@{/logout}">Log off</a></li>
+
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<section class="row col-12 encart d-flex justify-content-center">
+
+  <form class="col col-sm-10 col-md-8 col-lg-3 encart d-flex flex-column align-items-center"
+        style="border: solid 2px; border-radius: 7px; padding: 25px; color: grey"
+        th:action="@{/transferBank_action}" method="POST">
+    <div style="margin-bottom:1em;"><span><i
+        class="fas fa-money-check-alt"></i> Your balance : <span
+        th:text="${user.bankAccount.balance}"></span> €</span></div>
+    <input id="pass" class="form-control mb-4" type="text" name="amount" placeholder="Amount"
+           required th:name="amount">
+    <button type="submit"
+            class="Btn_link btn btn-success">Transfer fund
+    </button>
+  </form>
+</section>
+</body>
+</html>

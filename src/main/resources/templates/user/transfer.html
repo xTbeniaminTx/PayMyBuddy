@@ -25,17 +25,17 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
       <ul
           class="navbar-nav mr-auto mt-2 mt-lg-0 container-fluid justify-content-end">
-        <li class="nav-item"><a class="Btn_link btn btn-success mr-2"
-                                th:href="@{/transfer}">Transfer</a></li>
+        <li class="nav-item mx-2"><a class="Btn_link btn btn-success mr-2"
+                                     th:href="@{/transfer}">Transfer</a></li>
 
-        <li class="nav-item"><a class="Btn_link btn btn-success mr-2"
-                                th:href="@{/profile}">Profile</a></li>
+        <li class="nav-item mx-2"><a class="Btn_link btn btn-success mr-2"
+                                     th:href="@{/profile}">Profile</a></li>
 
-        <li class="nav-item"><a class="Btn_link btn btn-success mr-2"
-                                th:href="@{/contact}">Contact</a></li>
+        <li class="nav-item mx-2"><a class="Btn_link btn btn-success mr-2"
+                                     th:href="@{/contact}">Contact</a></li>
 
-        <li class="nav-item"><a class="Btn_link btn btn-success mr-2"
-                                th:href="@{/logout}">Log off</a></li>
+        <li class="nav-item mx-2"><a class="Btn_link btn btn-success mr-2"
+                                     th:href="@{/logout}">Log off</a></li>
 
       </ul>
     </div>
@@ -47,27 +47,36 @@
     <div class="col-9 d-flex justify-content-between">
 
       <span style="font-size: 2em;">Send Money</span>
-      <span>Your balance : <span th:text="${user.bankAccount.balance}"></span> €</span>
+      <div class="mx-2 px-2"><span class="border bg-info border-warning"><i
+          class="fas fa-money-check-alt"></i> Your balance : <span
+          th:text="${user.bankAccount.balance}"></span> €</span></div>
       <form th:action="@{/contact}">
         <button type="submit" class="Btn_link btn btn-primary">Add connection</button>
       </form>
     </div>
-    <form
-        class="col-9 encart d-flex align-items-center"
-        style="border: solid 2px; border-radius: 7px; padding: 25px; color: grey"
-        th:action="@{/transfer}" method="POST">
-      <select id="connection-select" name="beneficiary">
-        <option>Select A connection</option>
-        <option th:each="contact : ${user.contacts}"
-                th:text="${contact.getUserName}"></option>
-      </select>
-      <input class="form-control mb-4" type="text" name="Password"
-             placeholder="Amount" required th:name="amount">
-      <input class="form-control mb-4" type="text" name="Description"
-             placeholder="Description" required th:name="description">
-      <button id="submit_sign_in" style="padding-left:50px; padding-right:50px;" type="submit"
-              class="Btn_link btn btn-success">Pay
-      </button>
+
+    <form class="col-9 encart d-inline align-items-center"
+          style="border: solid 2px; border-radius: 7px; padding: 25px; color: grey"
+          th:action="@{/transfer}" method="POST">
+
+      <div class="mb-2 mt-2 d-flex g-2 g-lg-3 bd-highlight">
+
+        <select id="connection-select" class="form-control mx-2 px-2" name="beneficiary">
+          <option>Select A connection</option>
+          <option th:each="contact : ${user.contacts}"
+                  th:text="${contact.getUserName}"></option>
+        </select>
+        <input class="form-control mx-2 px-2" type="text" name="Password"
+               placeholder="Amount" required th:name="amount">
+        <input class="form-control mx-2 px-2" type="text" name="Description"
+               placeholder="Description" required th:name="description">
+        <button id="submit_sign_in"
+                style="padding-left:50px; padding-right:50px;" type="submit"
+                class="Btn_link btn btn-success">Pay
+        </button>
+
+      </div>
+
     </form>
 
   </section>
@@ -100,7 +109,8 @@
           class="col-12 encart d-flex justify-content-center p-5"
           style="border-bottom: solid 2px;">
         <th class="col-4 d-flex justify-content-center align-items-center"
-            th:text="${transaction.transmitter.userName}"></th>
+            th:text="${transaction.transmitter.userName + ' --> ' + transaction.user.userName}">
+        </th>
         <th class="col-4 d-flex justify-content-center align-items-center"
             th:text="${transaction.description}"></th>
         <th

@@ -1,20 +1,14 @@
 package fr.tolan.paymybuddy.controllers;
 
 
-import static java.util.stream.StreamSupport.stream;
-
 import fr.tolan.paymybuddy.daos.UserAccountRepository;
 import fr.tolan.paymybuddy.entities.Transaction;
 import fr.tolan.paymybuddy.entities.UserAccount;
 import fr.tolan.paymybuddy.services.TransactionServiceImpl;
-import fr.tolan.paymybuddy.services.UserAccountService;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javassist.bytecode.stackmap.TypeData.ClassName;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -39,8 +33,6 @@ public class UserController {
   @PersistenceContext
   private EntityManager entityManager;
 
-  @Autowired
-  private UserAccountService accountService;
 
   @Autowired
   private UserAccountRepository accountRepository;
@@ -49,6 +41,11 @@ public class UserController {
 
   @GetMapping("/")
   public String home() {
+    return "home";
+  }
+
+  @GetMapping("/home")
+  public String homepage() {
     return "home";
   }
 
@@ -133,9 +130,9 @@ public class UserController {
 
     UserAccount userAccount = transactionServiceImpl.addMoney(amount);
 
-      md.addObject("user", userAccount);
-      md.setViewName("user/profile");
-      return "redirect:/profile";
+    md.addObject("user", userAccount);
+    md.setViewName("user/profile");
+    return "redirect:/profile";
 
   }
 
@@ -178,6 +175,5 @@ public class UserController {
       throw new Exception("Error occured : it seems you are not logged in.");
     }
   }
-
 
 }

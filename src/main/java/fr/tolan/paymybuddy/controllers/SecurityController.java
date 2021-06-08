@@ -4,6 +4,7 @@ import fr.tolan.paymybuddy.daos.UserAccountRepository;
 import fr.tolan.paymybuddy.entities.UserAccount;
 import fr.tolan.paymybuddy.services.UserAccountService;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,6 @@ public class SecurityController {
     } else {
       return "redirect:/error";
     }
-
   }
 
   @GetMapping("/access-denied")
@@ -72,6 +72,18 @@ public class SecurityController {
 
     return "access-denied";
 
+  }
+
+  @GetMapping("/logout")
+  public String fetchSignoutSite(HttpServletRequest request) throws Exception {
+    SecurityContextHolder.clearContext();
+    HttpSession session = request.getSession(false);
+    if (session != null) {
+      session.invalidate();
+      return "home";
+    } else {
+      return "redirect:/error";
+    }
   }
 
 }

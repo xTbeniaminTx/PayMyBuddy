@@ -1,7 +1,6 @@
 package fr.tolan.paymybuddy.controllers;
 
 
-
 import static java.util.stream.StreamSupport.stream;
 
 import fr.tolan.paymybuddy.daos.UserAccountRepository;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javassist.bytecode.stackmap.TypeData.ClassName;
 import javax.persistence.EntityManager;
@@ -61,7 +61,10 @@ public class UserController {
         ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
             .getUsername());
     List<UserAccount> users = (List<UserAccount>) accountRepository.findAll();
-    Set<String> usernames= users.stream().map(UserAccount::getUserName).collect(Collectors.toSet());
+    Set<String> usernames = users.stream()
+        .map(UserAccount::getUserName)
+        .filter(s -> !s.equals(principalUser.getUserName()))
+        .collect(Collectors.toSet());
     Set<UserAccount> contactListOfPrincipalUser = principalUser.getContacts();
     if (!contactListOfPrincipalUser.isEmpty()) {
       for (UserAccount user : users) {
@@ -72,7 +75,6 @@ public class UserController {
         }
       }
     }
-
 
     md.addAttribute("users", userThatCanBeAdded);
     md.addAttribute("usernames", usernames);
@@ -128,19 +130,13 @@ public class UserController {
   @Transactional
   @PostMapping("/transferBank_action")
   public String bankTransferAction(@RequestParam double amount, ModelAndView md) throws Exception {
-    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    if (principal instanceof UserDetails) {
-      UserAccount user = accountRepository.findByUserName(((UserDetails) principal).getUsername());
-      entityManager
-          .createNativeQuery("UPDATE bank_account SET balance = ? WHERE id_bank_account = ?;")
-          .setParameter(1, amount + user.getBankAccount().getBalance())
-          .setParameter(2, user.getBankAccount().getIdBankAccount())
-          .executeUpdate();
-      md.addObject("user", user);
+
+    UserAccount userAccount = transactionServiceImpl.addMoney(amount);
+
+      md.addObject("user", userAccount);
       md.setViewName("user/profile");
       return "redirect:/profile";
-    }
-    throw new Exception("Error occured : it seems you are not logged in.");
+
   }
 
   @GetMapping("/transfer")

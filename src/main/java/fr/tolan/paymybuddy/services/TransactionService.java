@@ -15,4 +15,6 @@ public interface TransactionService {
 
   public boolean verifyIsAContact(UserAccount beneficiary, UserAccount transmitter);
 
+  public UserAccount addMoney(double account) throws Exception;
+
 }

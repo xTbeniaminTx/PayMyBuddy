@@ -1,6 +1,7 @@
 package fr.tolan.paymybuddy.services;
 
 import fr.tolan.paymybuddy.daos.TransactionRepository;
+import fr.tolan.paymybuddy.daos.UserAccountRepository;
 import fr.tolan.paymybuddy.entities.Transaction;
 import fr.tolan.paymybuddy.entities.UserAccount;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,11 @@ public class TransactionServiceImpl implements TransactionService {
 
   public static final double COMISSION_PERCENTAGE = 0.005;
 
+  @Autowired
+  UserAccountService userAccountService;
+
+  @Autowired
+  UserAccountRepository accountRepository;
 
   @Autowired
   TransactionRepository transactionRepository;
@@ -41,6 +48,22 @@ public class TransactionServiceImpl implements TransactionService {
       }
     }
     return false;
+  }
+
+  @Override
+  public UserAccount addMoney(double amount) throws Exception {
+    Object principal = userAccountService.getConnectedUser();
+    if (principal instanceof UserDetails) {
+      UserAccount user = accountRepository.findByUserName(((UserDetails) principal).getUsername());
+      entityManager
+          .createNativeQuery("UPDATE bank_account SET balance = ? WHERE id_bank_account = ?;")
+          .setParameter(1, amount + user.getBankAccount().getBalance())
+          .setParameter(2, user.getBankAccount().getIdBankAccount())
+          .executeUpdate();
+
+      return user;
+    }
+    throw new Exception("Error occured : it seems you are not logged in.");
   }
 
   @Transactional
@@ -80,4 +103,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     return merged;
   }
+
+
+
 }

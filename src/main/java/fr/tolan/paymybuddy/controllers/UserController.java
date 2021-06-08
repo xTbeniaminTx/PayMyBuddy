@@ -1,13 +1,20 @@
 package fr.tolan.paymybuddy.controllers;
 
+
+
+import static java.util.stream.StreamSupport.stream;
+
 import fr.tolan.paymybuddy.daos.UserAccountRepository;
 import fr.tolan.paymybuddy.entities.Transaction;
 import fr.tolan.paymybuddy.entities.UserAccount;
 import fr.tolan.paymybuddy.services.TransactionServiceImpl;
 import fr.tolan.paymybuddy.services.UserAccountService;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import javassist.bytecode.stackmap.TypeData.ClassName;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -54,6 +61,7 @@ public class UserController {
         ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
             .getUsername());
     List<UserAccount> users = (List<UserAccount>) accountRepository.findAll();
+    Set<String> usernames= users.stream().map(UserAccount::getUserName).collect(Collectors.toSet());
     Set<UserAccount> contactListOfPrincipalUser = principalUser.getContacts();
     if (!contactListOfPrincipalUser.isEmpty()) {
       for (UserAccount user : users) {
@@ -67,6 +75,7 @@ public class UserController {
 
 
     md.addAttribute("users", userThatCanBeAdded);
+    md.addAttribute("usernames", usernames);
     md.addAttribute("user", principalUser);
     return "user/contact";
   }

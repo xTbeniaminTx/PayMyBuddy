@@ -44,7 +44,7 @@
 
 <section class="row col-12 encart d-flex justify-content-around">
   <form
-      class="col col-sm-10 col-md-8 col-lg-3 d-flex flex-column align-items-center mt-2 pt-2 border mx-2 px-2"
+      class="col col-sm-6 col-md-4 col-lg-2 d-flex flex-column align-items-center mt-2 pt-2 border mx-2 px-2"
       th:action="@{/contact_action}" method="POST">
     <input class="form-control  mt-2 pt-2 mx-2 px-2 mb-4" type="text" name="contact"
            placeholder="Write the name of your contact"
@@ -55,7 +55,18 @@
     </button>
   </form>
   <div
-      class="col col-sm-10 col-md-8 col-lg-3 encart d-flex flex-column align-items-center border mx-2 px-2">
+      class="col col-sm-6 col-md-4 col-lg-2 encart d-flex flex-column align-items-center border mx-2 px-2">
+    <h3>Contacts You Can Add</h3>
+    <table class="table table-success table-striped">
+      <th:block th:each="contact : ${usernames}" class="table-info">
+        <tr>
+          <td class="table-info" th:text="${contact}"></td>
+        </tr>
+      </th:block>
+    </table>
+  </div>
+  <div
+      class="col col-sm-6 col-md-4 col-lg-2 encart d-flex flex-column align-items-center border mx-2 px-2">
     <h3>Existing Contacts</h3>
     <table class="table table-success table-striped">
       <th:block th:each="contact : ${user.contacts}" class="table-info">

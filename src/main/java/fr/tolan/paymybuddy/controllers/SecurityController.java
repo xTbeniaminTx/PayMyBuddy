@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -33,20 +34,39 @@ public class SecurityController {
 
 
   @GetMapping("/login")
-  public ModelAndView login(ModelAndView md, UserAccount user) {
+  public ModelAndView login(@RequestParam(value = "error", required = false) String error,
+      @RequestParam(value = "logout", required = false) String logout, ModelAndView md,
+      UserAccount user) {
+
+    if (error != null) {
+      md.addObject("error", "Invalid username or password");
+    }
+    if (logout != null) {
+      md.addObject("msg", "You logout successfully");
+    }
+
     md.addObject("user", user);
     md.setViewName("security/login");
     return md;
   }
 
+  @GetMapping("/login_error")
+  public ModelAndView loginError(ModelAndView md, UserAccount user) {
+    md.addObject("user", user);
+    md.addObject("loginError", true);
+    md.setViewName("security/login");
+    return md;
+  }
+
   @PostMapping("/dashboard")
-  public String loginAction(HttpServletRequest req, UserAccount user) {
+  public String loginAction(HttpServletRequest req, UserAccount user) throws Exception {
     userAccountService.authenticateUser(req, user);
     if (SecurityContextHolder.getContext().getAuthentication()
         .getPrincipal() instanceof UserDetails) {
       return "user/dashboardUser";
     }
-    return "redirect:/error";
+
+    return "redirect:/login_error";
   }
 
   @GetMapping("/register")

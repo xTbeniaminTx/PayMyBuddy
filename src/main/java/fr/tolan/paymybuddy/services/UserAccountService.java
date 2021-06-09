@@ -1,5 +1,6 @@
 package fr.tolan.paymybuddy.services;
 
+import fr.tolan.paymybuddy.daos.UserAccountRepository;
 import fr.tolan.paymybuddy.entities.UserAccount;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,15 +20,23 @@ public class UserAccountService {
   @Autowired
   AuthenticationManager authenticationManager;
 
+  UserAccountRepository accountRepository;
+
   public UsernamePasswordAuthenticationToken generateToken(UserAccount user) {
     return new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
   }
 
-  public void authenticateUser(HttpServletRequest req, UserAccount user) {
-    SecurityContext sc = SecurityContextHolder.getContext();
-    sc.setAuthentication(authenticationManager.authenticate(this.generateToken(user)));
-    HttpSession session = req.getSession(true);
-    session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
+  public String authenticateUser(HttpServletRequest req, UserAccount user) {
+    try {
+      SecurityContext sc = SecurityContextHolder.getContext();
+      sc.setAuthentication(authenticationManager.authenticate(this.generateToken(user)));
+      HttpSession session = req.getSession(true);
+      session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
+    } catch (Exception e) {
+      e.printStackTrace();
+
+    }
+    return "/error";
   }
 
   public void registerUser(UserAccount user) {
@@ -40,6 +49,12 @@ public class UserAccountService {
 
     return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+  }
+
+  public boolean isUserNameValid(String username) {
+    UserAccount byUserName = accountRepository.findByUserName(username);
+
+    return byUserName != null;
   }
 
 }

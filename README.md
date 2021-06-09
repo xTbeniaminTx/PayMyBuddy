@@ -1,7 +1,8 @@
 "# PayMyBuddy" 
 
+DAL for PayMyBuddy, an app use for money transferts between friends
 
-### 1.2 Diagrams
+Diagrams
 
 ![UML](diagrammeDeClasse%20.png)
 ![UML](modelePhysiqueDeDonnees.JPG)

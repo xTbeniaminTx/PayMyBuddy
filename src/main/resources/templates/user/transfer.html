@@ -125,7 +125,10 @@
             th:text="${transaction.description}"></th>
         <th
             class="col-4 d-flex justify-content-center align-items-centera"
-            th:text="${transaction.amount}"></th>
+            th:text="${#numbers.formatDecimal(transaction.amount, 1, 'POINT', 2, 'COMMA')} + ' € '">
+
+        </th>
+
       </tr>
       </tbody>
     </table>

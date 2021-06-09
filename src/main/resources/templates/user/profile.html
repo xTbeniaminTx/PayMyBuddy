@@ -53,9 +53,12 @@
   <form class="col col-sm-10 col-md-8 col-lg-3 encart d-flex flex-column align-items-center"
         style="border: solid 2px; border-radius: 7px; padding: 25px; color: grey"
         th:action="@{/transferBank_action}" method="POST">
-    <div class="mx-2 px-2"><span class="border border-warning"><i
-        class="fas fa-money-check-alt"></i> Your balance : <span
-        th:text="${user.bankAccount.balance}"></span> €</span></div>
+    <div class="mx-2 px-2 my-2 py-2"><span class=" mx-2 px-2 my-2 py-2 "><i
+        class="fas fa-euro-sign"></i> Your balance :
+      <span
+          th:text="${#numbers.formatDecimal(user.bankAccount.balance, 1, 'POINT', 2, 'COMMA')}">
+      </span> € </span>
+    </div>
     <input id="pass" class="form-control mb-4" type="text" name="amount" placeholder="Amount"
            required th:name="amount">
     <button type="submit"

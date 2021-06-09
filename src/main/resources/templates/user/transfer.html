@@ -5,6 +5,12 @@
   <title>Pay My Buddy - Home</title>
   <link rel="stylesheet" type="text/css"
         href="/webjars/bootstrap/css/bootstrap.min.css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css"
+        rel="stylesheet" type="text/css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/regular.min.css"
+        rel="stylesheet" type="text/css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        rel="stylesheet" type="text/css"/>
   <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
   <script type="text/javascript"
           src="/webjars/bootstrap/js/bootstrap.min.js"></script>
@@ -47,9 +53,13 @@
     <div class="col-9 d-flex justify-content-between">
 
       <span style="font-size: 2em;">Send Money</span>
-      <div class="mx-2 px-2"><span class="border bg-info border-warning"><i
-          class="fas fa-money-check-alt"></i> Your balance : <span
-          th:text="${user.bankAccount.balance}"></span> €</span></div>
+      <div class="mx-2 px-2 my-2 bg-light py-2">
+        <i
+            class="fas fa-euro-sign"></i> Your balance :
+        <span
+            th:text="${#numbers.formatDecimal(user.bankAccount.balance, 1, 'POINT', 2, 'COMMA')}">
+      </span> € </span>
+      </div>
       <form th:action="@{/contact}">
         <button type="submit" class="Btn_link btn btn-primary">Add connection</button>
       </form>
